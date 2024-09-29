@@ -1,13 +1,46 @@
-## RP2040 Driver
+# grblHAL for Blot
 
-A grblHAL driver for the Raspberry Pi Pico RP2040 processor on a [Pi Pico or Pi Pico W board](https://www.raspberrypi.org/products/raspberry-pi-pico/).
+A grblHAL driver for the [Blot](https://github.com/hackclub/blot/) plotter by Hackclub.
 
-This driver can be built with the [Web Builder](http://svn.io-engineering.com:8080/?driver=RP2040).
+Allows the control of the Blot plotter using G-code commands. (Except for the pen servo)
 
-__Important__ download information can be found [here](https://github.com/grblHAL/core/wiki/Compiling-grblHAL).  
-The project has been updated to/now uses [SDK version 1.5.0](https://github.com/raspberrypi/pico-sdk/releases).
+## Configuration
 
-The default build environment is Visual Studio Code, it is surprisingly easy to set up on Raspberry Pi - see the [Getting started](https://datasheets.raspberrypi.org/pico/getting-started-with-pico.pdf) documentation for how to for this and other platforms.
+Configure the Blot plotter with these settings:
+```gcode
+$0=10
+$100=80
+$101=80
+$110=1000
+$111=1000
+$120=100
+$121=100
+$130=120
+$131=120
+```
 
----
-2023-09-20
+If you have limit switches, enable homing with the following commands:
+```gcode
+$22=1
+$23=3
+$44=1
+$45=2
+$46=0
+```
+
+If you don't have limit switches, you can disable the switches with this command:
+```gcode
+$5=3
+```
+
+Make sure the Machine Moves to the correct direction, -x and -y should move the pen to the left and down respectively.
+If that is not the case try flipping the motor connectors or swapping the wires.
+
+## Installation and Building
+
+See Releases for compiled firmware.
+
+To install, download the firmware, insert the USB cable into the Blot while holding the Boot button, marked with a `B` on the board. The Blot will show up as a USB drive, drag the firmware file onto the drive. The Blot will restart and the firmware will be updated.
+
+For Building instructions see [grblHAL RP2040](https://github.com/grblHAL/RP2040).
+__Note:__ Before building, you need to change `#define COREXY Off` to `#define COREXY On` in `grbl/config.h`.
